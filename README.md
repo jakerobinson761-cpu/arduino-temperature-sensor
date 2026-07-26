@@ -47,3 +47,6 @@ There is a video demonstrating the project works in the repository below the REA
 
 ## Code 
 The code (written in C++) can be found in the repository (also below the README.md) titled "code".
+
+## Images
+Images of the breadboard and circuit diagram are also in a repository below the README.md titled "images".
