@@ -50,3 +50,5 @@ The code (written in C++) can be found in the repository (also below the README.
 
 ## Images
 Images of the breadboard and circuit diagram are also in a repository below the README.md titled "images".
+The circuit diagram is in Circuit Diagram.pdf
+The pictures of the breadboard are in IMG_2788.jpeg and IMG.2789.jpeg.
