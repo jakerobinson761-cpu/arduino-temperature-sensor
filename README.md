@@ -44,3 +44,6 @@ There is a video demonstrating the project works in the repository below the REA
    - the - goes to ground rail
    - the S goes to pin 9 (specifically an analog pin so PWM can be used).
    - PWM is when the voltage averages between extreme voltages of 0 and 5 V to act as if there were some inbetween value, when in reality there     actually isn't. Suppose i=127.5 (50% of the maximum possible value of 255) then the duty cycle (the percentage of time that 5V is sent) is     50%. Half the time the arduino sends 0 volts and the other half the arduino sends 5 volts.
+
+## Code 
+The code (written in C++) can be found in the repository (also below the README.md) titled "code".
