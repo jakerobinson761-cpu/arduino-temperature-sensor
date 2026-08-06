@@ -1,10 +1,10 @@
 # 3-W LED Temperature Safety System
 ## What the project is:
-This is a documentation of a project that detects the temperature of a 3-W LED using a thermistor. The 3-W LED's brightness increases (using PWM) from a pull-up resistor (when the yellow button is pressed a voltage of 0 is read from a digital input which is coded to slightly increase the brightness of the 3-W LED). The exact same concept applies to the dimming of the 3-W LED, however it is dimmed with the blue button. The green LED is turned on so long as the temperature is within a "safe" range (the temperature levels never actually reach unsafe levels), a yellow LED turns on alongside a double beep sound if the temperature reaches a "warning level," which in this code is set to 90°F but can easily be changed in the code, and a red LED turns on alongside an alarm if the temperature reaches a "hot level". Eventually, if the temperature is too hot, then the 3-W LED will completely turn off. Bear in mind that only one LED is turned on at a time, for example if green is on then yellow and red are off.
+This is a documentation of a project that detects the temperature of a 3-W LED using a thermistor. The 3-W LED's brightness increases (using PWM) from an internal pull-up resistor (when the yellow button is pressed a voltage of 0 is read from a digital input which is coded to slightly increase the brightness of the 3-W LED). The exact same concept applies to the dimming of the 3-W LED, however it is dimmed with the blue button. The blue LED is turned on so long as the temperature is within a "safe" range (the temperature levels never actually reach unsafe levels), a yellow LED turns on alongside a double beep sound if the temperature reaches a "warning level," which in this code is set to 90°F but can easily be changed in the code, and a red LED turns on alongside an alarm if the temperature reaches a "hot level". Eventually, if the temperature is too hot, then the 3-W LED will be turned completely turn off and a 5V DC fan (connected to a TA6586) will turn on to cool the thermistor and 3-W LED. Bear in mind that only one LED is turned on at a time, for example if green is on then yellow and red are off. The 3-W LED needs too much current (far more than the Arduino can safely supply without the Arduino burning up, so a BJT npn was used). Each of the resistors used in this project were carefully calculated using Ohm’s law and the maximum safe current that could be used was the I (or current) component of Ohm’s law (a “worst case” scenario was assumed, e.g., for standard LEDs kirchhoff's 1st law wasn’t used and instead it was assumed that since it could be the case that the standard, small LED burned up (in which case the voltage drop is 0 across that diode) then it would be treated as such (this is a variation of Paul McWhorter’s way of calculating the necessary resistance).
+
 
 ## Demonstration Video:
-https://youtu.be/QR3i2EKvqRc?si=kqeoBhta2BLoh0OV
-
+https://youtu.be/_737u4TT6bs (small correction: at the 2:33 mark the serial monitor reads "⚠️ WARNING ⚠️ : LED is at UNSAFE temperature levels." However, this what cut off due to the video editor)
 
 ## Explaining each part:
 1. Passive Buzzer
@@ -15,14 +15,14 @@ https://youtu.be/QR3i2EKvqRc?si=kqeoBhta2BLoh0OV
    - The passive buzzer sounds a repeating alarm once the temperature surpasses the "temperature hot," which is when the red LED turns on.
 
 2. Buttons
-   - The buttons use a pull-up resistor. A pull-up resistor is when there's a voltage going through some resistor (usually 4.7k ohm's or above)     that has some digital input between the resistor and a button. Whenever the button is pressed the digital input reads 0, which happens          because the digital pin is reading the ground (the circuit is complete whenever the button is pressed). Whenever the button isn't being         pressed the digital pin reads 1, which happens because the circuit isn't able to go to ground so the pin is reading the 5v being sent           through the resistor.
+   - The buttons use a pull-up resistor. A pull-up resistor is when there's a voltage constantly being read from a digital input pin. Whenever       the button is pressed the ground starts being read, which causes the digital input to read 0. This happens because the circuit is complete      whenever the button is pressed). Whenever the button isn't being pressed the digital pin reads 1, which happens because the circuit isn't       able to go to ground so the pin is reading the 5v being sent through the resistor.
    - The yellow button is connected to pin 12; the blue button is connected to pin 8.
    - Clicking yellow increases the brightness of the 3-W lED; clicking blue decreases the brightness of the 3-W LED.
 
 3. 3 LEDs
   - The 3 LEDs are powered using digital outputs.
-  - Green is connected to pin 3, with a 330 ohm resistor between it and the p-type end. The n-type end is connected to a ground rail.
-  - Yellow is connected to pin 4, with a 330 ohm resistor between it and the p-type end. The n-type end is connected to a ground rai.
+  - Blue is connected to pin 3, with a 330 ohm resistor between it and the p-type end. The n-type end is connected to a ground rail.
+  - Yellow is connected to pin 4, with a 330 ohm resistor between it and the p-type end. The n-type end is connected to a ground rail.
   - Red is connected to pin 7, with a 330 ohm resistor between it and the p-type end. The n-type end is connected to a ground rail.
   - The LEDs won't shut off when the 3-W LED is forced to shut off. Instead, they will remain on at the temperatures previously explained. The      temperature will eventually decrease such that you will see red, yellow, and green each turn on once more (but this time in the reverse         order as when the temperature increased).
 
@@ -40,11 +40,15 @@ https://youtu.be/QR3i2EKvqRc?si=kqeoBhta2BLoh0OV
 
 5. 3-W LED
    - For those readers who hate math, this section is far easier than the last section.
-   - The 3-W LED, despite being an LED, did NOT require a resistor.
-   - the + goes to the power rail
-   - the - goes to ground rail
-   - the S goes to pin 9 (specifically an analog pin so PWM can be used).
+   - The 3-W LED, despite being an LED, did NOT require a resistor (the LED has a built-in constant resistor)
+   - the + goes to the power rail, which is powered by the battery
+   - the - goes to collector on the BJT
+   - the S goes to the power rail, which is bowered by the battery
    - PWM is when the voltage averages between extreme voltages of 0 and 5 V to act as if there were some inbetween value, when in reality there     actually isn't. Suppose i=127.5 (50% of the maximum possible value of 255) then the duty cycle (the percentage of time that 5V is sent) is     50%. Half the time the arduino sends 0 volts and the other half the arduino sends 5 volts.
+  
+6. BJT
+   - BJT stands for "bipolar junction transistor", and it is needed in this project as the 3-W LED drives far too much current. A transistor acts as a       switch: whenever the arduino sends a small current to the base a larger current flows from the collector to the emitter, this powers the 3-W LED.
+   - 
 
 ## Code 
 The code (written in C++) can be found in the repository (also below the README.md) titled "code".
