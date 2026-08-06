@@ -77,7 +77,7 @@ https://youtu.be/_737u4TT6bs (small correction: at the 2:33 mark the serial moni
    - The model EDL3007S05 was used.
 
 ## Code 
-The code (written in C++) can be found in the repository (also below the README.md) titled "code".
+The code (written in C++) can be found in the repository (also below the README.md) titled "code". I wrote all of the C++ by myself with occasional outside assistance.
 
 ## Images
 Images of the breadboard and circuit diagram are also in a repository below the README.md titled "images".
