@@ -1,5 +1,3 @@
-Here is a copy+paste of the code used for the project.
-
 #include <EEPROM.h>
 
 int yellowButtonPin=12;
@@ -8,10 +6,11 @@ int buttonYellow;
 int buttonBlue;
 int i=0;
 int dt=250;
-int buzzPin=2;
-int greenPin=3;
+int buzzPin=13;
+int bluePin=3;
 int yellowPin=4;
 int redPin=7;
+int fanPin=10;
 //* for reading the temperature *//
 int thermistorPin=A0;
 int dt2=500;
@@ -28,18 +27,20 @@ bool overheated = false;
 bool warningPlayed=false;
 int temperature100=100;
 bool alarmPlayed=false;
+bool firstTime=true;
 
 
 void setup() {
   // put your setup code here, to run once:
 Serial.begin(9600);
-pinMode(yellowButtonPin,INPUT);
-pinMode(blueButtonPin,INPUT);
+pinMode(yellowButtonPin,INPUT_PULLUP);
+pinMode(blueButtonPin,INPUT_PULLUP);
 pinMode(buzzPin,OUTPUT);
-pinMode(greenPin,OUTPUT);
+pinMode(bluePin,OUTPUT);
 pinMode(yellowPin,OUTPUT);
 pinMode(redPin,OUTPUT);
 pinMode(threeWatPin,OUTPUT);
+pinMode(fanPin,OUTPUT);
 //* for reading the temperature *//
 pinMode(thermistorPin,INPUT);
 Serial.begin(9600);
@@ -66,8 +67,8 @@ delay(dt2);
 buttonYellow=digitalRead(yellowButtonPin);
 buttonBlue=digitalRead(blueButtonPin);
 
-if (i == 0 && !overheated){
-  digitalWrite(greenPin,LOW);
+if (i == 0 && !overheated && !firstTime){
+  digitalWrite(bluePin,LOW);
   digitalWrite(yellowPin,LOW);
   digitalWrite(redPin,LOW);
   analogWrite(threeWatPin,0);  
@@ -75,9 +76,12 @@ if (i == 0 && !overheated){
 }
 
   if(temperatureFahrenheit<=temperatureWarning){
+  firstTime=true;
   warningPlayed=false;
   alarmPlayed=false;
-  digitalWrite(greenPin,HIGH);
+  overheated=false;
+  digitalWrite(fanPin,LOW);
+  digitalWrite(bluePin,HIGH);
   digitalWrite(yellowPin,LOW);
   digitalWrite(redPin,LOW);
   analogWrite(threeWatPin,i);
@@ -87,7 +91,7 @@ if (i == 0 && !overheated){
  if(temperatureFahrenheit>temperatureWarning && temperatureFahrenheit<temperatureMax){
   Serial.println("LED Status: Heating Up");
   Serial.println(" ⚠️ WARNING ⚠️ ");
-  digitalWrite(greenPin,LOW);
+  digitalWrite(bluePin,LOW);
   digitalWrite(yellowPin,HIGH);
   digitalWrite(redPin,LOW);
   if(!warningPlayed){
@@ -108,7 +112,7 @@ if (i == 0 && !overheated){
   overheated=true;
   Serial.println(" ⚠️ WARNING ⚠️ : LED is at UNSAFE temperature levels.");
   Serial.println("🚫 DO NOT TOUCH LED 🚫");
-  digitalWrite(greenPin,LOW);
+  digitalWrite(bluePin,LOW);
   digitalWrite(yellowPin,LOW);
   digitalWrite(redPin,HIGH);
   analogWrite(threeWatPin,i);
@@ -127,6 +131,7 @@ if (i == 0 && !overheated){
   }
 
 if(temperatureFahrenheit>temperature100){
+  firstTime=false;
   overheated=true;
   alarmPlayed=true;
   warningPlayed=true;
@@ -136,7 +141,9 @@ if(temperatureFahrenheit>temperature100){
   EEPROM.update(0,i);
   Serial.println("LED IS TOO HOT");
   Serial.println("EMERGENCY SHUTDOWN");
-  digitalWrite(greenPin, LOW);
+  Serial.println("FAN INITIATED");
+  digitalWrite(fanPin,HIGH);
+  digitalWrite(bluePin, LOW);
   digitalWrite(yellowPin, LOW);
   digitalWrite(redPin, HIGH);
   return;
@@ -199,8 +206,8 @@ if (buttonBlue==0){
   delay(dt);
   }
 
-  if (i==0 && !overheated){
-  digitalWrite(greenPin,LOW);
+  if (i==0 && !overheated && !firstTime){
+  digitalWrite(bluePin,LOW);
   digitalWrite(yellowPin,LOW);
   digitalWrite(redPin,LOW);
   }
@@ -210,6 +217,5 @@ if (buttonBlue==0){
 
 Serial.println("----------------------------------------");
 delay(dt);
-
 
 }
