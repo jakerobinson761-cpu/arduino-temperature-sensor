@@ -21,10 +21,11 @@ https://youtu.be/_737u4TT6bs (small correction: at the 2:33 mark the serial moni
 
 3. 3 LEDs
   - The 3 LEDs are powered using digital outputs.
-  - Blue is connected to pin 3, with a 330 ohm resistor between it and the p-type end. The n-type end is connected to a ground rail.
-  - Yellow is connected to pin 4, with a 330 ohm resistor between it and the p-type end. The n-type end is connected to a ground rail.
-  - Red is connected to pin 7, with a 330 ohm resistor between it and the p-type end. The n-type end is connected to a ground rail.
+  - Blue is connected to pin 3, with a 220 ohm resistor between it and the p-type end. The n-type end is connected to a ground rail.
+  - Yellow is connected to pin 4, with a 220 ohm resistor between it and the p-type end. The n-type end is connected to a ground rail.
+  - Red is connected to pin 7, with a 220 ohm resistor between it and the p-type end. The n-type end is connected to a ground rail.
   - The LEDs won't shut off when the 3-W LED is forced to shut off. Instead, they will remain on at the temperatures previously explained. The      temperature will eventually decrease such that you will see red, yellow, and green each turn on once more (but this time in the reverse         order as when the temperature increased).
+  - The resistance of the resistor that was used was calculated using ohm's law. KVL, kirchoff's voltage law (which states that the sum of all voltage          drops and rises around a closed loop is 0), was disregarded as a "worst-case" scenario was assumed so as to best protect the arduino from burning       up. It could be the case that the diode is burned up, in which case the voltage drop across the diode is 0. This would mean the voltage drop across the resistor is 5 volts. The maximum current that a GPIO             (general purpose input output) pin on an arduino r3 can supply is 20mA-40mA, which is 0.02A-0.04A (to calculate the resistance you use Amps rather      than milliamps). The lower end was assumed for maximum safety, so R=V/I. V=5 volts; I=0.02 amperes. This gives a resistance of 220 ohms. 
 
 4. Thermistor
   - The thermistor indirectly reads the temperature through the Steinhart-hart equation (bear in mind that we must calculate the resistance of      the thermistor to see how the temperature varies--as a thermistor is a resistor whose resistance changes depending on the temperature).         The steinhart-hart equation is applicable here as an NTC (negative temperature coefficient) thermistor is being used here, which means as       the surrounding temperature increases the resistance of the thermistor decreases exponentially.
@@ -48,7 +49,7 @@ https://youtu.be/_737u4TT6bs (small correction: at the 2:33 mark the serial moni
   
 6. BJT
    - BJT stands for "bipolar junction transistor", and it is needed in this project as the 3-W LED drives far too much current. A transistor acts as a       switch: whenever the arduino sends a small current to the base a larger current flows from the collector to the emitter, this powers the 3-W LED.
-   - 
+   - The resistance was calculated
 
 ## Code 
 The code (written in C++) can be found in the repository (also below the README.md) titled "code".
