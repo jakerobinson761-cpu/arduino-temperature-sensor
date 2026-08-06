@@ -57,7 +57,24 @@ https://youtu.be/_737u4TT6bs (small correction: at the 2:33 mark the serial moni
    - The resistance was calculated using a set of equations. Firstly, the current that enters the BJT must be equal to the current that leaves the BJT       (due to kirchhoff's first law: the sum of all currents entering and leaving a node is 0). This means the current of the emitter=the current of the       collector+the current of the base. But the current of the base is negligible, as for a S8050 BJT the current of the collector is 300 times as           great as the current of the base (Ic=300Ib). So the equation can be rewritten as the current of the emitter is similar to the current of the            collector (Ie≈Ic). V=IR, just like for calculating the resistance needed to protect the arduino from powering the LED, is used here. V, due to          kirchhoff's second law, is equal to Vs=Vr+Vt. Vs: voltage supply (5 volts); Vr: voltage drop across the resistor; Vt=Vbe=.7; Vt: voltage drop           across the transistor. Vbe: voltage between base and emitter on an npn transistor (this is .7 volts). So the Vr=Vs-Vt (using algebra). This means       Vr=5-.7=4.3. We now need to calculate Ib, as the current through the base is what supplies the current. We can calculate Ib from Ic. The current        that goes through the collector is how much current the 3-W LED uses, which is 650mA or .65A. Ic=300Ib. So (.65A)=300Ib. This means                     Ib=0.00216666666. Now we can finally calculate how many ohms we need in this resistor using ohm's law. R=V/I. V is 4.3; I is 0.00216666666.             Therefore R is 1984.61539072. This rounds to 2000, and that's exactly why a 2000 ohm resistor was used.
    - Why do we need a resistor? So as to avoid burning up the arduino from supplying too much current to the base terminal.
 
-7. 
+7. SunFounder BreadVolt Breadboard Power Supply Module
+   - This was used to power the 3-W LED and to power the TA6586.
+   - The module has a lithium battery that plugs into both power and ground rails of the arduino (so all 4 rails)
+   - This module, when 5V is turned on, has a current of 1.5A.
+  
+8. TA6586
+   - This component was plugged into the fan and got its power from the SunFounder BreadVolt Power Supply (connected into the VCC, or pin 4)
+   - This component wasn't actually necessary for this project, but I instead added it for fun.
+   - The Backwards Input, which is pin 1 on the TA6586, was used and connected to pin 10.
+   - The Forwards Input, which was pin 2 on the TA6586, was not used (the DC fan I used only spins in one direction).
+   - Pin 3 on the TA6586 is GND, which connects to the ground rail.
+   - Pin 4 on the TA6586 is VCC, which stands for Voltage at the Common Collector, however this was powered not by the Collector of the BJT but      instead through the power rail, which was powered from the SunFounder Battery.
+   - Pin 7 and 8 on the TA6586 is the backwards output, and that was what the red wire of the DC fan was connected to.
+   - Pin 5 and 6 on the TA6586 is the forwards output, and that is what the black wire of the DC fan was connected to.
+  
+9. DC Fan
+   - The DC Fan I used required 0.12A, which is far more than a GPIO pin can safely supply without risking burning up the arduino, so the DC         fan is powered using the battery.
+   - The model EDL3007S05 was used.
 
 ## Code 
 The code (written in C++) can be found in the repository (also below the README.md) titled "code".
@@ -65,4 +82,4 @@ The code (written in C++) can be found in the repository (also below the README.
 ## Images
 Images of the breadboard and circuit diagram are also in a repository below the README.md titled "images".
 The circuit diagram is in Circuit Diagram.pdf
-The pictures of the breadboard are in IMG_2788.jpeg and IMG.2789.jpeg.
+The pictures of the breadboard are in the IMG files.
