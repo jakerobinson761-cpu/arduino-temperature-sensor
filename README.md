@@ -81,5 +81,5 @@ The code (written in C++) can be found in the repository (also below the README.
 
 ## Images
 Images of the breadboard and circuit diagram are also in a repository below the README.md titled "images".
-The circuit diagram is in Circuit Diagram.pdf
+The circuit diagram is in 3-W Temperature Safety System Diagram_bb.png
 The pictures of the breadboard are in the IMG files.
